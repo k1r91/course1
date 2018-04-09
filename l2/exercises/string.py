@@ -20,7 +20,9 @@
 # а donuts(23) - 'Количество пончиков: много'
 def donuts(count):
     # +++ ваш код +++
-    return
+    if count >= 10:
+        count = 'много'
+    return 'Количество пончиков: {}'.format(count)
 
 
 # B. Оба конца
@@ -32,7 +34,9 @@ def donuts(count):
 # верните просто пустую строчку.
 def both_ends(s):
     # +++ ваш код +++
-    return
+    if len(s) < 2:
+        return ''
+    return ''.join([s[:2], s[-2:]])
 
 
 # C. Кроме первого
@@ -45,7 +49,7 @@ def both_ends(s):
 # в которой все вхождения stra будут заменены на strb.
 def fix_start(s):
     # +++ ваш код +++
-    return
+    return ''.join([s[0], s[1:].replace(s[0], '*')])
 
 
 # D. Перемешивание
@@ -58,7 +62,8 @@ def fix_start(s):
 # Предполагается, что строки a и b имеют длину 2 и более символов.
 def mix_up(a, b):    
     # +++ ваш код +++
-    return
+    return ' '.join([''.join([b[:2], a[2:]]),
+                     ''.join([a[:2], b[2:]])])
 
 
 # E. Хорош
@@ -70,8 +75,12 @@ def mix_up(a, b):
 # Т.о., 'Этот ужин не так уж плох!' вернет:
 # Этот ужин хорош!
 def not_bad(s):
-    # +++ ваш код +++    
-    return
+    if s.find('плох') > s.find('не') > 0:
+        s = ''.join([s[:s.find('не')],
+                     'хорош',
+                     s[s.find('плох') + 4:]
+                     ])
+    return s
 
 
 # F. Две половины
@@ -83,7 +92,12 @@ def not_bad(s):
 # 1-половина-a + 1-половина-b + 2-половина-a + 2-половина-b
 def front_back(a, b):
     # +++ ваш код +++
-    return
+    return ''.join([
+        a[:int(len(a)/2 + 0.5)],
+        b[:int(len(b) / 2 + 0.5)],
+        a[int(len(a)/2 + 0.5):],
+        b[int(len(b) / 2 + 0.5):],
+    ])
 
 
 

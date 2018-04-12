@@ -84,7 +84,7 @@ def parse_date(date):
     if month < 1 or month > 12:
         return False
     february_days = 28
-    if year % 400 == 0:
+    if year % 400 == 0: # check leap year
         february_days = 29
     else:
         if year % 100 != 0 and year % 4 == 0:

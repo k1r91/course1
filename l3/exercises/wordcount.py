@@ -47,6 +47,39 @@ import sys
 
 # Это базовый код для разбора аргументов коммандной строки.
 # Он вызывает print_words() и print_top(), которые необходимо определить.
+
+
+def sanitize_words(words):
+    san_list = '.,:?!"()'
+    result = []
+    for word in words:
+        if len(word) > 2:
+            result.append(''.join(char for char in word if char not in san_list))
+    return result
+
+
+def count_words(filename):
+    result = {}
+    with open(filename, 'r', encoding='utf-8') as f:
+        words = f.read().split()
+        words = sanitize_words(words)
+    for word in words:
+        if word not in result.keys():
+            result[word] = words.count(word)
+    result = sorted(result.items(), key=lambda x: x[1], reverse=True)
+    return result
+
+
+def print_top(filename):
+    for word, count in count_words(filename)[:20]:
+        print(word, count)
+
+
+def print_words(filename):
+    for word, count in count_words(filename):
+        print(word, count)
+
+
 def main():
     if len(sys.argv) != 3:
         print('usage: python wordcount.py {--count | --topcount} file')

@@ -40,7 +40,7 @@ def mimic_dict(filename):
     dict = {}
     with open(filename, 'r', encoding='utf-8') as f:
         word_list = f.read().split()
-        dict[''] = word_list[0]
+        dict[''] = [word_list[0]]
         for word in word_list:
             dict[word] = list(set(word_list[word_list.index(word) + 1:]))
     return dict
@@ -49,22 +49,29 @@ def mimic_dict(filename):
 def print_mimic(mimic_dict, word):
     """Принимает в качестве аргументов имитационный словарь и начальное слово,
     выводит 200 случайных слов."""
+    result_text = ""
     for i in range(200):
-        pass
-    return
+        if mimic_dict[word]:
+            random_word = random.choice(mimic_dict[word])
+        else:
+            random_word = random.choice(mimic_dict[''])
+        word = random_word
+        result_text = ' '.join([result_text, random_word])
+    print(result_text)
 
 
 def main():
     if len(sys.argv) != 2:
         print('usage: ./mimic.py file-to-read')
         sys.exit(1)
-
     d = mimic_dict(sys.argv[1])
     print_mimic(d, '')
 
 
 if __name__ == '__main__':
-    #main()
-    for item, value in mimic_dict('text.txt').items():
-        print("{} -  {}".format(item, value))
-        print(len(value))
+     main()
+    # d = mimic_dict('text.txt')
+    # # for item, value in d.items():
+    # #     print("{} -  {}".format(item, value))
+    # #     print(len(value))
+    # print_mimic(d, '')

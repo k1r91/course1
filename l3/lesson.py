@@ -125,3 +125,10 @@ print(reduce(lambda x, y: x*y, [1, 2, 3, 4]))
 
 # x * sum([3,4,5,6])
 print((lambda x, *args: x * sum(args))(2, 3, 4, 5, 6))
+
+def bad_append(item, a_list=[]):
+    a_list.append(item)
+    return a_list
+
+print(bad_append('one'))
+print(bad_append('two'))

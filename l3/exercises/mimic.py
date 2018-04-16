@@ -38,15 +38,19 @@ def mimic_dict(filename):
     """Возвращает имитационный словарь, сопоставляющий каждое слово 
     со списом слов, которые непосредственно следуют за ним в тексте"""
     dict = {}
-    with open(filename, 'r') as f:
-        dict = f.read().split()
+    with open(filename, 'r', encoding='utf-8') as f:
+        word_list = f.read().split()
+        dict[''] = word_list[0]
+        for word in word_list:
+            dict[word] = list(set(word_list[word_list.index(word) + 1:]))
     return dict
 
 
 def print_mimic(mimic_dict, word):
     """Принимает в качестве аргументов имитационный словарь и начальное слово,
     выводит 200 случайных слов."""
-    # +++ваш код+++
+    for i in range(200):
+        pass
     return
 
 
@@ -61,5 +65,6 @@ def main():
 
 if __name__ == '__main__':
     #main()
-    print(mimic_dict('text.txt'))
-    print(mimic_dict('alice.txt'))
+    for item, value in mimic_dict('text.txt').items():
+        print("{} -  {}".format(item, value))
+        print(len(value))

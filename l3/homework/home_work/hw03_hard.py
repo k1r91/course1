@@ -39,11 +39,39 @@ def frac_calculator(expression):
             znam.append(frac.split('/')[1])
     expr_noz = noz(znam)  # least common denominator
     summ = 0
+    i = 0
     for frac in fracs:
+        if frac in '+-':
+            i += 1
+            continue
+        try:
+            sign = fracs[i - 1]
+            if sign == '+':
+                sign = True
+            elif sign == '-':
+                sign = False
+        except IndexError:
+            sign = True
         if '/' in frac:
             numerator = int(frac.split('/')[0])
             denominator = int(frac.split('/')[1])
-    return znam
+            numerator = numerator * expr_noz / denominator
+        elif frac.replace('-', '').isdigit():
+            numerator = int(frac) * expr_noz
+        if sign:
+            summ += numerator
+        else:
+            summ -= numerator
+        i += 1
+    summ = int(summ)
+    if summ > expr_noz:
+        whole_part = summ // expr_noz
+        fract_part = summ % expr_noz
+        if fract_part:
+            return '{} {}/{}'.format(whole_part, fract_part, expr_noz)
+        else:
+            return '{}'.format(whole_part)
+    return '{}/{}'.format(summ, expr_noz)
 
 # Задание-2:
 # Дана ведомость расчета заработной платы (файл "data/workers").
@@ -72,8 +100,10 @@ if __name__ == '__main__':
     expressions = [
         '5/6 + 4/7',
         '-2/3 - -2',
-        '2/5 + 3/8 + 4/9',
-        '3/7 + 2/3 + 1 4/5',
+        '2/3 + 2 - -4/7 - 4/5 + 1/6 + 1/2',
+        '8/3 + -2/3',
+        '1/3 - 1/3',
+        '4/3 + 71/4',
     ]
 
     for expr in expressions:

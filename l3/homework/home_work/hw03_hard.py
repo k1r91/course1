@@ -10,6 +10,25 @@
 # Вывод: 1 1/3
 
 
+def frac_calculator(expression):
+    def noz(znams):
+        '''
+        calculate least common denominator
+        :param znams:
+        :return:
+        '''
+        znams = map(int, znams)
+        tmp_noz = max(znams)
+        mult = 2
+
+    fracs = expression.split()
+    znam = []
+    for frac in fracs:
+        if '/' in frac:
+            znam.append(frac.split('/')[1])
+    print(noz(znam))
+    return znam
+
 # Задание-2:
 # Дана ведомость расчета заработной платы (файл "data/workers").
 # Рассчитайте зарплату всех работников, зная что они получат полный оклад,
@@ -31,3 +50,14 @@
 # Подсказка:
 # Чтобы получить список больших букв русского алфавита:
 # print(list(map(chr, range(ord('А'), ord('Я')+1))))
+
+
+if __name__ == '__main__':
+    expressions = [
+        '5/6 + 4/7',
+        '-2/3 - -2',
+        '2/5 + 3/8 + 4/9',
+    ]
+
+    for expr in expressions:
+        print(frac_calculator(expr))

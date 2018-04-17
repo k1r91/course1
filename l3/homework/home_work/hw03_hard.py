@@ -17,16 +17,32 @@ def frac_calculator(expression):
         :param znams:
         :return:
         '''
-        znams = map(int, znams)
-        tmp_noz = max(znams)
+        znams = list(map(int, znams))
+        max_denom = max(znams)
+        noz = max_denom
         mult = 2
+        flag = True
+        while flag:
+            for znam in znams:
+                if noz % znam != 0:
+                    flag = True
+                    noz = max_denom * mult
+                    mult += 1
+                    break
+                flag = False
+        return noz
 
     fracs = expression.split()
     znam = []
     for frac in fracs:
         if '/' in frac:
             znam.append(frac.split('/')[1])
-    print(noz(znam))
+    expr_noz = noz(znam)  # least common denominator
+    summ = 0
+    for frac in fracs:
+        if '/' in frac:
+            numerator = int(frac.split('/')[0])
+            denominator = int(frac.split('/')[1])
     return znam
 
 # Задание-2:
@@ -57,6 +73,7 @@ if __name__ == '__main__':
         '5/6 + 4/7',
         '-2/3 - -2',
         '2/5 + 3/8 + 4/9',
+        '3/7 + 2/3 + 1 4/5',
     ]
 
     for expr in expressions:

@@ -1,3 +1,6 @@
+import math
+import os
+
 # Задание-1:
 # Написать программу, выполняющую операции (сложение и вычитание) с простыми дробями.
 # Дроби вводятся и выводятся в формате:
@@ -11,6 +14,28 @@
 
 
 def frac_calculator(expression):
+
+    def nod(a, b):
+        '''
+        greatest common divisor
+        :param a:
+        :param b:
+        :return:
+        '''
+        while a != 0 and b != 0:
+            if a > b:
+                a = a % b
+            else:
+                b = b % a
+        return a + b
+
+    def simplify_fraction(num, denom):
+        while nod(num, denom) != 1:
+            frac_nod = nod(num, denom)
+            num /= frac_nod
+            denom /= frac_nod
+        return int(num), int(denom)
+
     def noz(znams):
         '''
         calculate least common denominator
@@ -64,14 +89,21 @@ def frac_calculator(expression):
             summ -= numerator
         i += 1
     summ = int(summ)
-    if summ > expr_noz:
+    if math.fabs(summ) > expr_noz:
         whole_part = summ // expr_noz
         fract_part = summ % expr_noz
         if fract_part:
+            fract_part, expr_noz = simplify_fraction(fract_part, expr_noz)
             return '{} {}/{}'.format(whole_part, fract_part, expr_noz)
         else:
             return '{}'.format(whole_part)
-    return '{}/{}'.format(summ, expr_noz)
+    if summ:
+        if math.fabs(summ) == expr_noz:
+            return str(int(summ/expr_noz))
+        summ, expr_noz = simplify_fraction(summ, expr_noz)
+        return '{}/{}'.format(summ, expr_noz)
+    else:
+        return '0'
 
 # Задание-2:
 # Дана ведомость расчета заработной платы (файл "data/workers").
@@ -80,6 +112,60 @@ def frac_calculator(expression):
 # то их ЗП уменьшается пропорционально, а за заждый час переработки
 # они получают удвоенную ЗП, пропорциональную норме.
 # Кол-во часов, которые были отработаны, указаны в файле "data/hours_of"
+
+
+def calculate_salary(fname_workers, fname_hours):
+
+    def _calc_salary(st_salary, st_hours, w_hours):
+        '''
+        calculate salary according to the condition
+        :param st_salary: standart worker salary
+        :param st_hours: standart worker hours
+        :param w_hours: worked hours
+        :return:
+        '''
+        st_salary, st_hours, w_hours = tuple(map(int, [st_salary,
+                                                       st_hours,
+                                                       w_hours]))
+        if st_hours == w_hours:
+            result_salary = st_salary
+        elif w_hours < st_hours:
+            result_salary = st_salary * w_hours / st_hours
+        else:
+            result_salary = st_salary * (1 + 2 * (w_hours-st_hours) / st_hours)
+        return result_salary
+
+    def print_salary(wlist):
+        '''
+        print all salaries
+        :param wlist:
+        :return:
+        '''
+        h_template = '{:<17}' * 7
+        w_template = '{:<17}' * 6
+        w_template = ''.join([w_template, '{:<17.2f}'])
+        print(h_template.format('Имя', 'Фамилия', 'Зарплата', 'Должность',
+                              'Норма часов', 'Отработано часов',
+                              'Итоговая зарплата'))
+        for worker in wlist:
+            print(w_template.format(worker[0], worker[1], worker[2], worker[3],
+                                  worker[4], worker[5], worker[6]))
+    def fill_list(fname):
+        result = []
+        with open(os.path.join(fname), encoding='utf-8') as file:
+            file_list = list(file)
+            for line in file_list[1:]:
+                result.append(line.split())
+        return sorted(result, key=lambda x: x[1])
+
+    workers_list, hours_list = fill_list(fname_workers), fill_list(fname_hours)
+    i = 0
+    for worker in workers_list:
+        worker.append(hours_list[i][2])
+        worker.append(_calc_salary(worker[2], worker[4], worker[5]))
+        i += 1
+
+    print_salary(workers_list)
 
 
 # Задание-3:
@@ -104,7 +190,13 @@ if __name__ == '__main__':
         '8/3 + -2/3',
         '1/3 - 1/3',
         '4/3 + 71/4',
+        '2/3 - 2 - -4/7 - 4/5 - 1/6 - 1/2',
+        '1/3 + 1/12 + 5/12',
+        '-4/5 + 4/5',
+        '5/3 - 1/6 - 1/2'
     ]
 
     for expr in expressions:
         print(frac_calculator(expr))
+
+    calculate_salary('data/workers', 'data/hours_of')

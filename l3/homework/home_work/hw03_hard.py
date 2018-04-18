@@ -183,12 +183,22 @@ def calculate_salary(fname_workers, fname_hours):
 
 
 def fun_with_fruits(fruit_fname):
+    # clear all files
+    for file in os.listdir(os.path.join('data/fruit_files')):
+        fname = os.path.join('data/fruit_files/{}'.format(file))
+        if os.path.isfile(fname):
+            os.remove(fname)
     rus_letters = list(map(chr, range(ord('А'), ord('Я') + 1)))
     with open(os.path.join(fruit_fname), 'r', encoding='utf-8') as f:
         for line in f:
             if line[0] in rus_letters:
-                print(line)
-    print(rus_letters)
+                fname = os.path.join('data/fruit_files/{}'.format(line[0]))
+                if os.path.isfile(fname):
+                    with open(fname, 'a', encoding='utf-8') as file:
+                        file.write(line)
+                else:
+                    with open(fname, 'w', encoding='utf-8') as file:
+                        file.write(line)
 
 if __name__ == '__main__':
     expressions = [
@@ -201,7 +211,7 @@ if __name__ == '__main__':
         '2/3 - 2 - -4/7 - 4/5 - 1/6 - 1/2',
         '1/3 + 1/12 + 5/12',
         '-4/5 + 4/5',
-        '5/3 - 1/6 - 1/2'
+        '5/3 - 1/6 - 1/2',
     ]
 
     for expr in expressions:

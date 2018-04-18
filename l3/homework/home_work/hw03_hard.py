@@ -182,6 +182,14 @@ def calculate_salary(fname_workers, fname_hours):
 # print(list(map(chr, range(ord('А'), ord('Я')+1))))
 
 
+def fun_with_fruits(fruit_fname):
+    rus_letters = list(map(chr, range(ord('А'), ord('Я') + 1)))
+    with open(os.path.join(fruit_fname), 'r', encoding='utf-8') as f:
+        for line in f:
+            if line[0] in rus_letters:
+                print(line)
+    print(rus_letters)
+
 if __name__ == '__main__':
     expressions = [
         '5/6 + 4/7',
@@ -200,3 +208,4 @@ if __name__ == '__main__':
         print(frac_calculator(expr))
 
     calculate_salary('data/workers', 'data/hours_of')
+    fun_with_fruits('data/fruits.txt')

@@ -16,7 +16,7 @@
 # Примечание: попробуйте записать решение в одну строку при помощи генератора списка
 # и встроенной функции sum
 def multiples():
-    return sum(x for x in range(1000) if x % 3 == 0 or x % 5 == 0)
+    return sum(list(i for i in range(1000) if i % 3 == 0 or i % 5 == 0))
 
 
 # B. Сумма четных чисел ряда Фибоначчи
@@ -28,11 +28,13 @@ def multiples():
 # Подсказка: разбейте задачу на части: сначала получите сам ряд Фибоначчи,
 # зачем получите ряд четных элементов.
 def fibonacci():
-    fib_list = [1, 1]
     nmax = 4000000
+    fib_list = [1, 1]
     while fib_list[-1] < nmax:
         fib_list.append(fib_list[-1] + fib_list[-2])
-    return sum(i for i in fib_list if i % 2 == 0)
+    print(fib_list)
+    result = sum(i for i in fib_list if i % 2 == 0)
+    return result
 
 
 # С. Самый большой палиндром
@@ -40,15 +42,14 @@ def fibonacci():
 # Самое большое число-палиндром, полученное произведением двух двухзначных чисел – 9009 = 91 * 99.
 # Найдите самый большой палиндром, полученный произведением двух трёхзначных чисел.
 def palindrome():
-    max_palindro = 0
-    for i in range(900, 1000):
-        for j in range(900, 1000):
-            mult = i*j
-            if str(mult) == str(mult)[::-1]:
-                if mult > max_palindro:
-                    max_palindro = mult
-    return max_palindro
-
+    pmax = 0
+    for i in range(900, 999):
+        for j in range(900, 999):
+            multiple = i * j
+            if str(multiple) == str(multiple)[::-1]:
+                if multiple > pmax:
+                    pmax = multiple
+    return pmax
 
 # Простая функция test() используется в main() для вывода
 # сравнения того, что возвращает с функция с тем, что она должна возвращать.

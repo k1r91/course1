@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import math
 from functools import reduce
 
 # Заполните код приведенных ниже функций. Функция main() уже настроена
@@ -22,12 +23,15 @@ from functools import reduce
 # и с помощью генератора списка. 
 def diff():
     # +++ ваш код +++
-    return
-
+    sum_square = sum(map(lambda x: x ** 2, range(101)))
+    # sum_square = sum([i ** 2 for i in range(101)])
+    square_sum = sum(range(101)) ** 2
+    return square_sum - sum_square
 
 # B. Найдите наибольшее произведение пяти последовательных цифр в 
 # 1000-значном числе.
-"""
+
+number = """
 73167176531330624919225119674426574742355349194934
 96983520312774506326239578318016984801869478851843
 85861560789112949495459501737958331952853208805511
@@ -50,8 +54,25 @@ def diff():
 71636269561882670428252483600823257530420752963450"""
 
 def max_five():
-    # +++ ваш код +++
-    return
+    def get_multiplication(s):
+        '''
+        вычисляет произведение чисел в строке s
+        :param s:
+        :return:
+        '''
+        multi = 1
+        for i in range(len(s)):
+            multi *= int(s[i])
+        return multi
+    multi_list = []
+    for i in range(len(number) - 4):
+        num = number[i: i + 5]
+        try:
+            multi_list.append([get_multiplication(num), i])
+        except ValueError:
+            pass
+    maximum = max(multi_list)
+    return maximum[0]
 
 
 # C. Какова сумма цифр числа 2**1000
@@ -59,7 +80,7 @@ def max_five():
 # Какова сумма цифр числа 2**1000?
 def summm():
     # +++ ваш код +++
-    return
+    return sum(map(lambda x: int(x), str(2 ** 1000)))
 
 
 # D. Найдите сумму цифр в числе 100!
@@ -67,7 +88,7 @@ def summm():
 # Найдите сумму цифр в числе 100!.
 def factorial():
     # +++ ваш код +++
-    return
+    return sum([int(x) for x in str(math.factorial(100))])
 
 
 # Простая функция test() используется в main() для вывода

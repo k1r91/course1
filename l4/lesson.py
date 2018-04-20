@@ -1,5 +1,8 @@
 import sys
 import copy
+import itertools
+import re
+import os
 # named slices
 D = slice(0, 2)
 M = slice(3, 5)
@@ -132,4 +135,50 @@ try:
 except StopIteration as ex:
     print("Exception StopIteration happend.")
 
+# slice from generator
 
+gen2 = bar(10)
+slice_gen2 = itertools.islice(gen2, 0, 5)
+print(list(slice_gen2))
+
+# regular expressions
+
+s = 'My email is cherkasov.kirill@gmail.com, my second email-2 is ' \
+    'cherkasov.kirill-1@yandex.ru'
+print(re.findall('email', s))
+print(re.findall('(email)', s))
+
+# recomend to use raw strings in patterns
+print('\n\thello')
+print(r'\n\thello')
+print(re.findall(r'\s(email)\s', s))
+print(re.findall(r'[l1]@', s))
+# same as previous
+print(re.findall(r'[a-zA-Z0-9-\.]+@[a-zA-Z0-9-\.]+', s))
+print(re.findall(r'[\w\.-]+@[\w\.-]+', s))
+
+# greedy regular expressions
+
+s1 = 'cat cot dog dig dug carrot'
+
+print(re.findall(r'c.*t', s1))
+
+# not greedy
+print(re.findall(r'c.*?t', s1))
+
+# Exact amount of symbols
+
+print(re.findall(r'c.{2,4}t', s1))
+
+d_s = '12983728934563897456249837562948383838356982437569283412137128937689411'
+# looking only to \d83\d occurences
+print(re.findall(r'\d(83)\d', d_s))
+print(re.findall(r'83', d_s))
+
+# looking to all 83 occurences
+
+print(re.findall(r'(?<=\d)(83)(?=\d)', d_s))
+
+# correct way to set file paths
+
+print(os.path.join('dir1', 'dir2', 'dir3', 'dir4'))

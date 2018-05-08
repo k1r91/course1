@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
+import math
+
 from functools import reduce
+
 
 # Заполните код приведенных ниже функций. Функция main() уже настроена
 # для вызова функций с несколькими различными параметрами,
@@ -21,13 +24,18 @@ from functools import reduce
 # Решите задачу двумя способами: с помощью map и lambda 
 # и с помощью генератора списка. 
 def diff():
-    # +++ ваш код +++
-    return
+    # with generators
+    # s1 = sum([x**2 for x in range(101)])
+    # s2 = sum([x for x in range(101)]) ** 2
+    # with lambda
+    s1 = sum(map(lambda x: x ** 2, range(101)))
+    s2 = sum(range(101)) ** 2
+    return int(math.fabs(s1 - s2))
 
 
 # B. Найдите наибольшее произведение пяти последовательных цифр в 
 # 1000-значном числе.
-"""
+big_num = """
 73167176531330624919225119674426574742355349194934
 96983520312774506326239578318016984801869478851843
 85861560789112949495459501737958331952853208805511
@@ -48,10 +56,22 @@ def diff():
 84580156166097919133875499200524063689912560717606
 05886116467109405077541002256983155200055935729725
 71636269561882670428252483600823257530420752963450"""
-
+big_num = big_num.replace('\n', '')
 def max_five():
-    # +++ ваш код +++
-    return
+    max_mult = 0
+    max_num = 5
+    i = 0
+    while i < len(big_num) - max_num + 1:
+        try:
+            int(big_num[i])
+        except ValueError:
+            i += 1
+            continue
+        mult = reduce(lambda x, y: x * y, map(int, big_num[i: i + max_num]))
+        if mult > max_mult:
+            max_mult = mult
+        i += 1
+    return max_mult
 
 
 # C. Какова сумма цифр числа 2**1000
@@ -59,15 +79,15 @@ def max_five():
 # Какова сумма цифр числа 2**1000?
 def summm():
     # +++ ваш код +++
-    return
+    return sum(map(int, str(2**1000)))
 
 
 # D. Найдите сумму цифр в числе 100!
 # n! означает n * (n-1) * ... * 3 * 2 * 1
 # Найдите сумму цифр в числе 100!.
 def factorial():
-    # +++ ваш код +++
-    return
+    fact = reduce(lambda x, y: x * y, range(1, 101))
+    return sum(map(int, str(fact)))
 
 
 # Простая функция test() используется в main() для вывода

@@ -6,9 +6,17 @@
 # квадратами элементов исходного списка
 # [1, 2, 4, 0] --> [1, 4, 16, 0]
 
+
+def square_ls(base_ls):
+    return list(map(lambda x: x ** 2, base_ls))
+
 # Задание-2:
 # Даны два списка фруктов.
 # Получить список фруктов, присутствующих в обоих исходных списках.
+
+
+def list_intersect(ls1, ls2):
+    return list(set(ls1).intersection((set(ls2))))
 
 # Задание-3:
 # Дан список, заполненный произвольными числами.
@@ -16,3 +24,16 @@
 # + Элемент кратен 3
 # + Элемент положительный
 # + Элемент не кратен 4
+
+
+def some_conditions(ls):
+    return [x for x in ls if x % 3 == 0 and x > 0 and x % 4 != 0]
+
+if __name__ == '__main__':
+    ls1 = [1, 2, 4, 0]
+    print(square_ls(ls1))
+    fruit1 = ['apple', 'banana', 'carrot', 'pineapple']
+    fruit2 = ['apple', 'banana', 'orange', 'ananas']
+    print(list_intersect(fruit1, fruit2))
+    ls3 = [1, 2, 3, -1, -3, 4 , -4, 5, 6, 7, 8, 9, 0]
+    print(some_conditions((ls3)))

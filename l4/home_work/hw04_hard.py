@@ -1,10 +1,12 @@
+from functools import reduce
+
 # Задание-1:
 # Матрицы в питоне реализуются в виде вложенных списков:
 # Пример. Дано:
 matrix = [[1, 0, 8],
           [3, 4, 1],
           [0, 4, 2]]
-          
+
 # Выполнить поворот (транспонирование) матрицы
 # Пример. Результат:
 # matrix_rotate = [[1, 3, 0],
@@ -12,6 +14,11 @@ matrix = [[1, 0, 8],
 #                  [8, 1, 2]]
 
 # Суть сложности hard: Решите задачу в одну строку
+
+
+def matrix_rotate(mtx):
+    return list(map(list, zip(*mtx)))
+
 
 # Задание-2:
 # Найдите наибольшее произведение пяти последовательных цифр в 1000-значном числе.
@@ -40,6 +47,17 @@ number = """
 71636269561882670428252483600823257530420752963450"""
 
 
+def max_mult_five(n):
+    n = n.replace('\n', '')
+    max_mult = 0
+    i = 0
+    while i < len(n) - 5:
+        mult = reduce(lambda x, y: x * y, map(int, n[i:i + 5]))
+        if mult > max_mult:
+            max_mult = mult
+        i += 1
+    return max_mult
+
 # Задание-3 (Ферзи):
 # Известно, что на доске 8×8 можно расставить 8 ферзей так, чтобы они не били
 # друг друга. Вам дана расстановка 8 ферзей на доске.
@@ -47,3 +65,38 @@ number = """
 # Программа получает на вход восемь пар чисел,
 # каждое число от 1 до 8 — координаты 8 ферзей.
 # Если ферзи не бьют друг друга, выведите слово NO, иначе выведите YES.
+
+
+def queens_beat(position):
+    for current_queen in position:
+        ls = position[:]
+        ls.remove(current_queen)
+        for queen in ls:
+            # check horizontal line
+            if current_queen[0] == queen[0]:
+                return False
+            # check vertical line
+            if current_queen[1] == queen[1]:
+                return False
+            # check diagonal line
+            if current_queen[0] - queen[0] == current_queen[1] - queen[1]:
+                return False
+    return True
+if __name__ == '__main__':
+    print(matrix_rotate(matrix))
+    print(max_mult_five(number))
+    positions = [
+        [(1, 2), (2, 4), (3, 6), (4, 8), (5, 3), (6, 1), (7, 7), (8, 5)],
+        [(1, 4), (2, 6), (3, 8), (4, 2), (5, 7), (6, 1), (7, 3), (8, 5)],
+        [(3, 2), (1, 2), (2, 7), (4, 8), (6, 8), (5, 3), (4, 2), (7, 7)],
+        [(8, 8), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)],
+        [(2, 3), (5, 4), (1, 7), (8, 2), (3, 5), (7, 8), (6, 5), (4, 6)],
+        [(5, 8), (1, 1), (1, 8), (8, 5), (3, 3), (6, 1), (6, 7), (3, 6)],
+        [(4, 8), (3, 2), (8, 6), (3, 3), (7, 7), (5, 6), (4, 2), (8, 5)]
+    ]
+    for step, pos in enumerate(positions):
+        if queens_beat(pos):
+            mod = 'NO'
+        else:
+            mod = 'YES'
+        print('Position № {} is beatable: {}'.format(step, mod))

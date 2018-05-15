@@ -2,6 +2,7 @@
 # python with_args.py param1 param2 param3
 import os
 import sys
+import shutil
 
 
 from hw05_easy import list_dir
@@ -38,9 +39,30 @@ def copy_file():
     if not dir_name:
         print("Необходимо указать имя файла вторым параметром")
         return
+    full_path = os.path.join(os.getcwd(), dir_name)
+    if os.path.isfile(full_path):
+        suffix = input("Введите желаемый суффикс для копии: ")
+        shutil.copy2(full_path, full_path + suffix)
+    else:
+        print("Исходное имя должно быть файлом")
+        return
 
 def remove_file():
-    pass
+    if not dir_name:
+        print("Необходимо указать имя файла вторым параметром")
+        return
+    full_path = os.path.join(os.getcwd(), dir_name)
+    if os.path.isfile(full_path):
+        question = input("Вы уверены что хотите удалить файл {}? y/n ".format(dir_name))
+        if question == 'y':
+            os.remove(full_path)
+            print("Файл {} успешно удалён".format(dir_name))
+        else:
+            return
+    else:
+        print("Исходное имя должно быть файлом")
+        return
+
 
 def ping():
     print("pong")

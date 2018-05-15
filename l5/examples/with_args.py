@@ -2,6 +2,9 @@
 # python with_args.py param1 param2 param3
 import os
 import sys
+
+
+from hw05_easy import list_dir
 print('sys.argv = ', sys.argv)
 
 
@@ -23,13 +26,33 @@ def make_dir():
         print('директория {} уже существует'.format(dir_name))
 
 
+def change_dir():
+    if not dir_name:
+        print("Необходимо указать имя директории вторым параметром")
+        return
+    os.chdir(dir_name)
+    print("Директория изменена на {}".format(os.getcwd()))
+
+
+def copy_file():
+    if not dir_name:
+        print("Необходимо указать имя файла вторым параметром")
+        return
+
+def remove_file():
+    pass
+
 def ping():
     print("pong")
 
 do = {
     "help": print_help,
     "mkdir": make_dir,
-    "ping": ping
+    "ping": ping,
+    "cd": change_dir,
+    "ls": list_dir,
+    "rm": remove_file,
+    "cp": copy_file,
 }
 
 try:

@@ -1,5 +1,9 @@
+import os, sys
+sys.path.append(
+    os.path.abspath(os.path.join(os.getcwd(), os.pardir, 'examples')))
+import with_args
 # Задание-1:
-# Доработайте реализацию программы из примера examples/5_with_args.py,
+# Доработайте реализацию программы из примера examples/with_args.py,
 # добавив реализацию следующих команд (переданных в качестве аргументов):
 #   cp <file_name> - создает копию указанного файла
 #   rm <file_name> - удаляет указанный файл (запросить подтверждение операции)

@@ -2,6 +2,7 @@
 
 import sys
 import re
+from collections import OrderedDict
 
 """Упражнение "Детские имена"
 
@@ -128,45 +129,28 @@ babynames = {
 import os
 import sys
 
+
 def extract_names(filename):
     """
-    Получает имя файла. 
-    Возвращает данные из файла в виде словаря:
-    {
-    'София, Софья': ['3841 (6,0%)*', '3668 (6,2%)', '2127 (4,8%)', 
-        '826 (2,4%)', '193 (0,4%)',],
-    'Виктория': ['2219', '1994', '1829', '1076', '1033'],
-    ...
-    }
-
-    При написании регулярных выражений удобно держать перед глазами копию
-    анализируемого текста. Вот как выглядит HTML-код в файле 
-    babynames_girls.html:
-
-    <tr> <td width="66"> 
-        1
-    </td> <td width="151"> 
-        София, Софья 
-    </td> <td width="85"> 
-        3841 (6,0%)* 
-    </td> <td width="104"> 
-        3668 (6,2%) 
-    </td> <td width="94"> 
-        2127 (4,8%) 
-    </td> <td width="104"> 
-        826 (2,4%) 
-    </td> <td width="104"> 
-        193 (0,4%) 
-    </td> </tr>
-
     """
-    # +++ваш код+++
-    return
+    years = [2012, 2010, 2005, 2000, 1990]
+    result = OrderedDict()
+    with open(filename, 'r', encoding='utf-8') as f:
+        name_pattern = r'<tr>(.*?)</tr>'
+        for item in re.findall(name_pattern, f.read(), flags=re.DOTALL):
+            name_pattern = r'<td.*?([А-Я][а-яё]+,{0,1} {0,1}[А-Я]{0,}[а-яё]{0,}).*?</td>'
+            try:
+                pattern = r'<td.*?>.*?(\d+|[А-Я][а-яё]+,{0,1} {0,1}[А-Я]{0,}[а-яё]{0,}).*?</td>'
+                data = re.findall(pattern, item, flags=re.DOTALL)
+                print(data)
+            except IndexError:
+                pass
 
 
 def print_names(babynames):
     # +++ваш код+++
     return
+
 
 def main():
     # Код разбора командной строки
@@ -184,4 +168,6 @@ def main():
 
   
 if __name__ == '__main__':
-    main()
+    extract_names('babynames_girls.html')
+    extract_names('babynames_boys.html')
+    # main()

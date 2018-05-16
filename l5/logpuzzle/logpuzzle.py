@@ -45,7 +45,15 @@ def read_urls(filename):
     извлекая имя хоста из имени файла (apple-cat.ru_access.log). Вычищает
     дубликаты и возвращает список url, отсортированный по названию изображения.
     """
-    return []
+    with open(filename, 'r', encoding='utf-8') as log:
+        result = []
+        pattern = r'/images/animals.*\.jpg'
+        site = 'http://apple-cat.ru'
+        result = re.findall(pattern, log.read())
+        result = sorted(list(set(result)))
+        for index, value in enumerate(result):
+            result[index] = ''.join([site, value])
+    return result
   
 
 def download_images(img_urls, dest_dir):
@@ -56,7 +64,26 @@ def download_images(img_urls, dest_dir):
     отобразить картинку в сборе. Создает директорию, если это необходимо.
     """
     # +++ваш код+++
-  
+    if not os.path.exists(dest_dir):
+        os.mkdir(dest_dir)
+    images = []
+    for index, url in enumerate(img_urls):
+        image_name = 'img' + str(index) + '.jpg'
+        image_path = os.path.join(os.getcwd(), dest_dir, image_name)
+        urllib.request.urlretrieve(url, image_path)
+        image_url = '<img src="{}">'.format(image_name)
+        images.append(image_url)
+    with open(os.path.join(dest_dir, 'index.html'), 'w', encoding='utf-8')\
+            as index:
+        writeable_list = [
+            '<html>\n',
+            '<body>\n'
+        ]
+        writeable_list += images
+        writeable_list += ['</body>\n', '</html>\n']
+        for line in writeable_list:
+            index.write(line)
+
 
 def main():
     args = sys.argv[1:]

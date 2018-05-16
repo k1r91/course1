@@ -77,19 +77,30 @@ def ex3_write_file(filename, nmax=2500):
 
 def ex3_wre(filename):
     with open(filename, 'r', encoding='utf-8') as f:
-        i = 1
+        # i = 1
+        result = []
         raw_file = f.read()
-        concurrences = []
-        while True:
-            pattern = r'(\d+)\1{' + str(i) + '}'
-            result = re.findall(pattern, raw_file)
-            if not result:
-                break
-            concurrences.append(result)
-            i += 1
-    for index, item in enumerate(concurrences[i - 2]):
-        concurrences[i - 2][index] = item * i
-    return concurrences[i - 2]
+        pattern = r'1{2,}|2{2,}|3{2,}|4{2,}|5{2,}|6{2,}|7{2,}|8{2,}|' \
+                  r'9{2,}|0{2,}'
+        concurrences = re.findall(pattern, raw_file)
+        max_len = 0
+        for item in concurrences:
+            if len(item) == max_len:
+                result.append(item)
+            if len(item) > max_len:
+                max_len = len(item)
+                result = list()
+                result.append(item)
+        # while True:
+        #     pattern = r'(\d+)\1{' + str(i) + '}'
+        #     result = re.findall(pattern, raw_file)
+        #     if not result:
+        #         break
+        #     concurrences.append(result)
+        #     i += 1
+    # for index, item in enumerate(concurrences[i - 2]):
+    #     concurrences[i - 2][index] = item * i
+    return result
 
 
 def ex3_wore(filename):

@@ -133,22 +133,71 @@ import sys
 def extract_names(filename):
     """
     """
-    years = [2012, 2010, 2005, 2000, 1990]
-    result = OrderedDict()
+    calc_years = [2012, 2010, 2005, 2000, 1990]
+    babynames = {}
+
+    def strip_last_symbol(ls):
+        temp = ls[:]
+        try:
+            return list(map(lambda x: int(x[:-1]), temp))
+        except ValueError:
+            return list(map(lambda x: float(x[:-1]), temp))
+
     with open(filename, 'r', encoding='utf-8') as f:
         name_pattern = r'<tr>(.*?)</tr>'
         for item in re.findall(name_pattern, f.read(), flags=re.DOTALL):
-            name_pattern = r'<td.*?([А-Я][а-яё]+,{0,1} {0,1}[А-Я]{0,}[а-яё]{0,}).*?</td>'
             try:
-                pattern = r'<td.*?>.*?(\d+|[А-Я][а-яё]+,{0,1} {0,1}[А-Я]{0,}[а-яё]{0,}).*?</td>'
+                pattern = r'<td.*?>.*?(\d+ \(\d+,\d+\%\)|\d+|[А-Я][а-яё]+,' \
+                          r'{0,1} {0,1}[А-Я]{0,}[а-яё]{0,}).*?</td>'
                 data = re.findall(pattern, item, flags=re.DOTALL)
-                print(data)
+                if data:
+                    name = data[1]
+                    names_by_years = data[2:]
+                    str_to_search = "".join(names_by_years)
+                    percentage_pattern = r'\d+,\d+%'
+                    percentages = re.findall(percentage_pattern, str_to_search)
+                    if percentages:
+                        years_pattern = r'\d+ '
+                        years = re.findall(years_pattern, str_to_search)
+                        years = strip_last_symbol(years)
+                        percentages = list(map(lambda x: x.replace(',', '.'),
+                                               percentages))
+                        percentages = strip_last_symbol(percentages)
+                    else:
+                        years = list(map(int, names_by_years))
+                    value = {}
+                    for i, year in enumerate(calc_years):
+                        if percentages:
+                            value[year] = [years[i], percentages[i]]
+                        else:
+                            value[year] = [years[i], None]
+                    babynames[name] = value
             except IndexError:
                 pass
+    return babynames
 
 
 def print_names(babynames):
-    # +++ваш код+++
+    # s = {1: '2', 3: '4'}
+    # print(sorted(s.items(), key=lambda s: s[1], reverse = True))
+    while True:
+        arg = input("Input year 2012, 2010, 2005, 2000, 1990"
+                    " or press q to exit")
+        if arg == 'q':
+            sys.exit(1)
+        if arg not in ['2012', '2010', '2005', '2000', '1990']:
+            continue
+        list_to_sort = []
+        for key, value in babynames.items():
+            list_to_sort.append([key, value[int(arg)]])
+        result = sorted(list_to_sort, key=lambda x: x[1][0], reverse=True)
+        print('{:<17}    {:<10}    Процент'.format('Имя', 'Количество'))
+        for item in result:
+            print('{:<17}    {:<10}    {}'.format(
+                item[0],
+                item[1][0],
+                item[1][1]
+            ))
     return
 
 
@@ -168,6 +217,7 @@ def main():
 
   
 if __name__ == '__main__':
-    extract_names('babynames_girls.html')
-    extract_names('babynames_boys.html')
+    fname1 = 'babynames_girls.html'
+    fname2 = 'babynames_boys.html'
+    print_names(extract_names(fname2))
     # main()

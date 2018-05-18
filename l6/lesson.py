@@ -68,3 +68,4 @@ class TastySoup:
 ingridients = ['ключевая вода', 'деревенская картошка', 'свежий лук']
 soup = TastySoup(ingridients)
 soup.vzuhhh()
+#view lesson at 2:24

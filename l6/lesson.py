@@ -69,3 +69,15 @@ ingridients = ['ключевая вода', 'деревенская картош
 soup = TastySoup(ingridients)
 soup.vzuhhh()
 #view lesson at 2:24
+
+
+class Mylist(list):
+    '''
+    extends standart list: list starts with index 1
+    '''
+    def __getitem__(self, offset):
+        return list.__getitem__(self, offset - 1)
+
+s = Mylist('abcd')
+
+print(s[1], s[2], s[3], s[4])

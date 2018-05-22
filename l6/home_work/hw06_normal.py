@@ -61,7 +61,6 @@ class Student(Human):
     def up_class_room(self):
         self.classroom.up()
 
-
     def get_parents(self):
         return 'Mother: {}, Father: {}'.format(self.mother, self.father)
 

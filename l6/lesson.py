@@ -70,7 +70,6 @@ soup = TastySoup(ingridients)
 soup.vzuhhh()
 #view lesson at 2:24
 
-
 class Mylist(list):
     '''
     extends standart list: list starts with index 1

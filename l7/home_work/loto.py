@@ -1,11 +1,10 @@
-from card import Card
+from game import Game
+from player import AiPlayer
 
 
 def main():
-    user_card = Card('Карточка пользователя')
-    cpu_card = Card('Карточка компьютера')
-    print(user_card)
-    print(cpu_card)
-    pass
+    if __name__ == '__main__':
+        game1 = Game([AiPlayer('Оптимус Прайм'), AiPlayer('Мегатрон'), AiPlayer('Бендер')])
+        game1.go()
 if __name__ == '__main__':
     main()

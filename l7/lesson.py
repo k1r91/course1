@@ -174,3 +174,34 @@ class Reverse:
 rever = Reverse('Python - my love')
 for r in rever:
     print(r)
+
+# delegation
+
+
+class Wrapper:
+    def __init__(self, obj):
+        self.wrapped = obj
+
+    def __getattr__(self, item):
+        print('Trace:', item)
+        return getattr(self.wrapped, item)
+
+    def __add__(self, other):
+        if isinstance(self.wrapped, list) and isinstance(other, list):
+            return self.wrapped + other
+
+    def __getitem__(self, item):
+        ''' support indexing '''
+        if isinstance(self.wrapped, list):
+            return self.wrapped[item]
+
+ls = Wrapper([1, 2, 3])
+ls.append(4)
+d = ls.pop()
+print(ls[2])
+ls += [5, 6]
+print(ls)
+print(len(ls))
+d = Wrapper({1: 55, 2: 66})
+print(d.keys())
+print(d.values())

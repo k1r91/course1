@@ -44,7 +44,6 @@ class WeatherRequest:
             city_id,
             metric,
             self.app_id,)
-        print(request_url)
         request_data = json.load(urllib.request.urlopen(request_url))
         self.save(request_data)
         return request_data
@@ -93,10 +92,8 @@ class WeatherRequest:
 
 def main():
     weather = WeatherRequest(Db())
-    # print(weather.request('Yekaterinburg'))
+    print(weather.request('Yekaterinburg'))
     # print(weather.request_by_country('RU'))
-    for i in range(10):
-        weather.test_save()
 
 
 if __name__ == '__main__':

@@ -37,12 +37,15 @@ class City:
     def load_cities_to_db(self):
         with open(self.unpacked_path_name, 'r', encoding='utf-8') as f:
             data = json.loads(f.read())
-            values = [list(item.values()) for item in data]
-            for index, value in enumerate(values[:]):
-                lon = values[index][3]['lon']
-                lat = values[index][3]['lat']
-                values[index][3] = lon
-                values[index].append(lat)
+            values = []
+            for item in data:
+                values.append([
+                    item['id'],
+                    item['name'],
+                    item['country'],
+                    item['coord']['lon'],
+                    item['coord']['lat']
+                ])
             self.conn.executemany('INSERT INTO {} VALUES (?,?,?,?,?)'.format(self.table_name), values)
             self.conn.commit()
 
@@ -52,8 +55,9 @@ class City:
 
 
 def main():
-    city = City(Db())
-    city.refresh_cities()
+    # city = City(Db())
+    # city.load_cities_to_db()
+    pass
 
 
 if __name__ == '__main__':

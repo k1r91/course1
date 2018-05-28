@@ -44,7 +44,8 @@ class WeatherRequest:
             city_id,
             metric,
             self.app_id,)
-        request_data = json.load(urllib.request.urlopen(request_url))
+        data = urllib.request.urlopen(request_url).read().decode('utf-8')
+        request_data = json.loads(data)
         self.save(request_data)
         return request_data
 
@@ -89,11 +90,24 @@ class WeatherRequest:
         self.conn.execute(query)
         self.conn.commit()
 
+    @staticmethod
+    def parse(request):
+        s = '''Current weather in {}:
+        temperature: {},
+        weather: {}
+        '''.format(request['name'],
+                   request['main']['temp'],
+                   request['weather'][0]['description'])
+        return s
+
 
 def main():
-    weather = WeatherRequest(Db())
-    print(weather.request('Yekaterinburg'))
-    # print(weather.request_by_country('RU'))
+    # weather = WeatherRequest(Db())
+    # data = weather.request('Yekaterinburg')
+    # print(data)
+    # print(weather.parse(data))
+    #print(weather.request_by_country('RU'))
+    pass
 
 
 if __name__ == '__main__':
